@@ -262,7 +262,7 @@
                   "autoUpgradeMinorVersion": true,
                   "settings": {
                       "fileUris": [
-                          "[concat(parameters('_artifactsLocation'), '/', variables('CustomScriptScriptFolder'), '/', variables('CustomScriptScriptFileName'), parameters('_artifactsLocationSasToken'))]"
+                          "[concat(variables('CustomScriptScriptFolder'))]"
                       ],
                       "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('CustomScriptScriptFolder'), '/', variables('CustomScriptScriptFileName'))]"
                   }
