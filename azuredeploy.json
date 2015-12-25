@@ -320,7 +320,7 @@
       "name": "[concat(variables('vmName'), '2', '/CustomScript')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyindex(2)))]"
+        "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), '2'))]"
       ],
       "properties": {
         "publisher": "Microsoft.Compute",
