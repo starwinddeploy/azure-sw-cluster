@@ -81,7 +81,7 @@
     "wadcfgxstart": "[concat(variables('wadlogs'), variables('wadperfcounters1'), variables('wadperfcounters2'), '<Metrics resourceId=\"')]",
     "wadmetricsresourceid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('diagnosticsStorageAccountResourceGroup'), '/providers/', 'Microsoft.Compute/virtualMachines/', variables('vmName'))]",
     "wadcfgxend": "\"><MetricAggregation scheduledTransferPeriod=\"PT1H\"/><MetricAggregation scheduledTransferPeriod=\"PT1M\"/></Metrics></DiagnosticMonitorConfiguration></WadCfg>",
-      "CustomScriptScriptFolder": "https://github.com/starwinddeploy/azure-sw-cluster, '/', 'Scripts')]",
+      "CustomScriptScriptFolder": "'https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master', '/', 'Scripts')]",
       "CustomScriptScriptFileName": "CustomScript.ps1"
   },
   "resources": [
