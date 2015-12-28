@@ -328,9 +328,9 @@
               "typeHandlerVersion": "1.4",
               "settings": {
                 "fileUris": [
-                  "variables('CustomScriptScript')"
+                  "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/CustomScript.ps1"
                 ],
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('CustomScriptScript'))]"
+                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CustomScript.ps1')]"
               }
             }
           }
