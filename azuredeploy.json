@@ -52,9 +52,12 @@
       "type": "string",
       "defaultValue": "Standard_D2",
       "allowedValues": [
+        "Standard_A3",
+        "Standard_A4",
         "Standard_D2",
         "Standard_D3",
-        "Standard_D4"
+        "Standard_DS2",
+        "Standard_DS3"
       ],
       "metadata": {
         "description": "Size of the VM"
@@ -110,6 +113,7 @@
     "imageOffer": "starwindvirtualsan",
     "vmName": "vm",
     "vmCount": 2,
+    "sizeOfDiskInGB": "1024",
     "subnet1Name": "subnet1",
     "subnet2Name": "subnet2",
     "virtualNetworkName": "virtualNetwork",
@@ -119,8 +123,7 @@
     "availabilitySetName": "availabilitySet1",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet2Name'))]",
-    "CustomScriptScript": "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/CustomScript.ps1"
+    "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet2Name'))]"
   },
   "resources": [
     {
@@ -245,12 +248,8 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), copyindex(1))]",
+      "name": "[concat(variables('vmName'), '_node1')]",
       "location": "[parameters('location')]",
-      "copy": {
-        "name": "vmLoop",
-        "count": "[variables('vmCount')]"
-      },
       "plan": {
         "name": "[parameters('imageSKU')]",
         "publisher": "starwind",
@@ -288,7 +287,18 @@
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
-          }
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk",
+              "diskSizeGB": "[variables('sizeOfDiskInGB')]",
+              "lun": 0,
+              "vhd": {
+                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(1),'/','datadisk.vhd')]"
+              },
+              "createOption": "Empty"
+            }
+          ]
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -313,28 +323,149 @@
           }
         }
       },
-        "resources": [
-          {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName'), copyindex(1), '/CustomScriptExtension')]",
-            "location": "[parameters('location')]",
-            "apiVersion": "2015-06-15",
-            "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyindex(1)))]"
-            ],
-            "properties": {
-              "publisher": "Microsoft.Compute",
-              "type": "CustomScriptExtension",
-              "typeHandlerVersion": "1.4",
-              "settings": {
-                "fileUris": [
-                  "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/CustomScript.ps1"
-                ],
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CustomScript.ps1')]"
-              }
+      "resources": [
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(variables('vmName'), '_node1', '/CustomScriptExtension')]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), '_node1'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.4",
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/EachNode.ps1"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File EachNode.ps1')]"
             }
           }
-        ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(variables('vmName'), '_node2')]",
+      "location": "[parameters('location')]",
+      "plan": {
+        "name": "[parameters('imageSKU')]",
+        "publisher": "starwind",
+        "product": "starwindvirtualsan"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic1Name'), copyindex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic2Name'), copyindex(1))]",
+        "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]"
+      ],
+      "properties": {
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+        },
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "offer": "[variables('imageOffer')]",
+            "publisher": "[variables('imagePublisher')]",
+            "sku": "[parameters('imageSKU')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(2),'/','osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk",
+              "diskSizeGB": "[variables('sizeOfDiskInGB')]",
+              "lun": 0,
+              "vhd": {
+                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(2),'/','datadisk.vhd')]"
+              },
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[concat(resourceId('Microsoft.Network/networkInterfaces',variables('nic1Name')), copyindex(1))]"
+            },
+            {
+              "properties": {
+                "primary": false
+              },
+              "id": "[concat(resourceId('Microsoft.Network/networkInterfaces',variables('nic2Name')), copyindex(1))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "true",
+            "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
+          }
+        }
+      },
+      "resources": [
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(variables('vmName'), '_node2', '/CustomScriptExtension2')]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), '_node2'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.4",
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/EachNode.ps1"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File EachNode.ps1')]"
+            }
+          }
+        },
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(variables('vmName'), '_node2', '/CustomScriptExtension')]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), '_node2'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.4",
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/CreateHA.ps1"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CreateHA.ps1')]"
+            }
+          }
+        }
+      ]
     }
   ]
 }
