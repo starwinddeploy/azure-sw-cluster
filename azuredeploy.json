@@ -314,30 +314,27 @@
         }
       },
         "resources": [
-            {
-                "name": "CustomScript",
-                "type": "extensions",
-                "location": "[parameters('location')]",
-                "apiVersion": "2015-06-15",
-                "dependsOn": [
-                    "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyindex(1)))]"
+          {
+            "name": "[concat(variables('vmName'),'/CustomScriptExtension')]",
+            "type": "extensions",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+              "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyindex(1)))]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Compute",
+              "type": "CustomScriptExtension",
+              "typeHandlerVersion": "1.4",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "fileUris": [
+                  "variables('CustomScriptScript')"
                 ],
-                "tags": {
-                    "displayName": "CustomScript"
-                },
-                "properties": {
-                    "publisher": "Microsoft.Compute",
-                    "type": "CustomScriptExtension",
-                    "typeHandlerVersion": "1.4",
-                    "autoUpgradeMinorVersion": true,
-                    "settings": {
-                        "fileUris": [
-                            "[concat(variables('CustomScriptScript'))]"
-                        ],
-                        "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('CustomScriptScript'))]"
-                    }
-                }
+                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('CustomScriptScript'))]"
+              }
             }
+          }
         ]
     }
   ]
