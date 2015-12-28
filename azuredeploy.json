@@ -348,28 +348,29 @@
               "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File EachNode.ps1')]"
             }
           }
+        },
+        {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "name": "[concat(variables('vmName'), copyindex(1), '/CustomScriptExtension')]",
+          "location": "[parameters('location')]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyindex(1)))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.4",
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/createha.ps1"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File createha.ps1')]"
+            }
+          }
         }
       ]
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), '2', '/CreateHAScript')]",
-      "location": "[parameters('location')]",
-      "apiVersion": "2015-06-15",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), '2'))]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.Compute",
-        "type": "CustomScriptExtension",
-        "typeHandlerVersion": "1.4",
-        "settings": {
-          "fileUris": [
-            "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/CreateHA.ps1"
-          ],
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CreateHA.ps1')]"
-        }
-      }
     }
+    
   ]
 }
