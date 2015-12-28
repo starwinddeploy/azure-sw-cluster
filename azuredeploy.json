@@ -283,7 +283,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(1),'/','osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds','_node1','/','osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -294,7 +294,7 @@
               "diskSizeGB": "[variables('sizeOfDiskInGB')]",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(1),'/','datadisk.vhd')]"
+                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds','_node1','/','datadisk.vhd')]"
               },
               "createOption": "Empty"
             }
@@ -384,7 +384,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(2),'/','osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds','_node2','/','osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -395,7 +395,7 @@
               "diskSizeGB": "[variables('sizeOfDiskInGB')]",
               "lun": 0,
               "vhd": {
-                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds',copyindex(2),'/','datadisk.vhd')]"
+                "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds','_node2','/','datadisk.vhd')]"
               },
               "createOption": "Empty"
             }
