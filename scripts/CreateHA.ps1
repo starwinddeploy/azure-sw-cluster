@@ -47,24 +47,9 @@ try
     $secondNode.HBInterface = "#p1=10.0.1.5:3260"
     $secondNode.ALUAOptimized = $true
         
-    $device = Add-HADevice -server $server -firstNode $firstNode -secondNode $secondNode -initMethod "Clear"
+    $device = Add-HADevice -server $server -firstNode $firstNode -secondNode $secondNode -initMethod "NotSynchronize"
     
     $syncState = $device.GetPropertyValue("ha_synch_status")
-
-    while ($syncState -ne "1")
-    {
-        #
-        # Refresh device info
-        #
-        $device.Refresh()
-
-        $syncState = $device.GetPropertyValue("ha_synch_status")
-        $syncPercent = $device.GetPropertyValue("ha_synch_percent")
-
-        Start-Sleep -m 2000
-
-        Write-Host "Synchronizing: $($syncPercent)%" -foreground yellow
-    }
 }
 catch
 {
