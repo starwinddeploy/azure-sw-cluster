@@ -331,11 +331,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyindex(1), '/CustomScriptExtension')]",
+      "name": "[concat(variables('vmName'), '2', '/CustomScriptExtension')]",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', concat(variables('vmName'), copyindex(1)))]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), '2')]"
       ],
       "properties": {
         "publisher": "Microsoft.Compute",
