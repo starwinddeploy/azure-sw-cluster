@@ -331,6 +331,26 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'), '1', '/CustomScriptExtension')]",
+      "location": "[parameters('location')]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), '1')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.4",
+        "settings": {
+          "fileUris": [
+            "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/FirstNode.ps1"
+          ],
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File FirstNode.ps1')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('vmName'), '2', '/CustomScriptExtension')]",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -343,9 +363,9 @@
         "typeHandlerVersion": "1.4",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/CreateHA.ps1"
+            "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/SecondNode.ps1"
           ],
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CreateHA.ps1')]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1')]"
         }
       }
     }
