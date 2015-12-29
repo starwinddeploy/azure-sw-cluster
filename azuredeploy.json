@@ -113,7 +113,7 @@
     "imageOffer": "starwindvirtualsan",
     "vmName": "vm",
     "vmCount": 2,
-    "sizeOfDiskInGB": "1024",
+    "sizeOfDiskInGB": "1023",
     "subnet1Name": "subnet1",
     "subnet2Name": "subnet2",
     "virtualNetworkName": "virtualNetwork",
@@ -351,7 +351,7 @@
         },
         {
           "type": "Microsoft.Compute/virtualMachines/extensions",
-          "name": "[concat(variables('vmName'), copyindex(1), '/CustomScriptExtension')]",
+          "name": "[concat(variables('vmName'), copyindex(1), '/CustomScriptExtensionHA')]",
           "location": "[parameters('location')]",
           "apiVersion": "2015-06-15",
           "dependsOn": [
