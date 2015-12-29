@@ -23,26 +23,10 @@ Format-Volume -FileSystem NTFS -NewFileSystemLabel "Starwind" -Confirm:$false
 ### Connect iSCSI 
 
 
-New-IscsiTargetPortal 
--TargetPortalAddress 10.0.1.4 | `
-Get-IscsiTarget|?{$_.NodeAddress} | Connect-IscsiTarget `
--IsMultipathEnabled $true `
--IsPersistent $true 
-
-New-IscsiTargetPortal 
+New-IscsiTargetPortal `
 -TargetPortalAddress 127.0.0.1 | `
 Get-IscsiTarget|?{$_.NodeAddress} | Connect-IscsiTarget `
 -IsMultipathEnabled $true `
 -IsPersistent $true 
-
-Connect-IscsiTarget -TargetPortalAddress 10.0.1.4 `
--NodeAddress iqn.2008-08.com.starwindsoftware:10.0.1.4-starwind `
--IsMultipathEnabled $true `
--IsPersistent $true
-
-Connect-IscsiTarget -TargetPortalAddress 127.0.0.1 `
--NodeAddress iqn.2008-08.com.starwindsoftware:vm-starwind `
--IsMultipathEnabled $true `
--IsPersistent $true
 
 
