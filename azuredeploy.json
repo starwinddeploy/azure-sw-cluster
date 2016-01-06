@@ -373,7 +373,7 @@
           "fileUris": [
             "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/SecondNode.ps1"
           ],
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1 -devicesize ','variables('imagePublisher')')]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1 -devicesize ','parameters('DeviceSize')')]"
         }
       }
     }
