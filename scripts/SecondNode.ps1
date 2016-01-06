@@ -40,7 +40,7 @@ $devicesize = "1024"
 
     $firstNode = new-Object Node
 
-    $firstNode.ImagePath = "S"
+    $firstNode.ImagePath = "My computer\S"
     $firstNode.ImageName = $imagename
     $firstNode.Size = $devicesize
     $firstNode.CreateImage = $true
@@ -66,7 +66,7 @@ $devicesize = "1024"
     $secondNode.HostPort = "3261"
     $secondNode.Login = "root"
     $secondNode.Password = "starwind"
-    $secondNode.ImagePath = "S"
+    $secondNode.ImagePath = "My computer\S"
     $secondNode.ImageName = $imagename
     $secondNode.Size = $devicesize
     $secondNode.CreateImage = $true
