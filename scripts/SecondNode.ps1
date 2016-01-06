@@ -12,18 +12,6 @@ Start-Service -Name msiscsi
 ###   Enable Jumbo Frames
 Set-NetAdapterAdvancedProperty -Name * -RegistryKeyword “*JumboPacket” -Registryvalue 9014
 
-#Get IP Addresses
- $nicip = ( Get-NetIPAddress | Where-Object { $_.InterfaceAlias -eq 'ethernet' }).ipaddress[1]
-
-If ($nicip -eq "10.0.1.4"){
-write-host "0:First Node"
-exit 0}
-Elseif ($nicip -eq "10.0.1.5"){
-write-host "1:Second Node"
-exit 1}
-Else {exit 1}
-
-
 ###   Prepare Data Disk
 Get-Disk |
 Where partitionstyle -eq 'raw' |
@@ -92,15 +80,6 @@ catch
 }
 
 $server.Disconnect()
-
-
-### Connect iSCSI 
-
-New-IscsiTargetPortal `
--TargetPortalAddress 127.0.0.1 | `
-Get-IscsiTarget|?{$_.NodeAddress} | Connect-IscsiTarget `
--IsMultipathEnabled $true `
--IsPersistent $true 
 
 
 
