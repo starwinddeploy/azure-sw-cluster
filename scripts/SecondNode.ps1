@@ -1,3 +1,9 @@
+### log
+$ErrorActionPreference="SilentlyContinue"
+Stop-Transcript | out-null
+$ErrorActionPreference = "Continue"
+Start-Transcript -path C:\log.txt -append
+
 ###   Enable Firewall for ISCSI
 Set-NetFirewallRule -DisplayGroup 'iSCSI Service' -Enabled True
 
@@ -27,8 +33,7 @@ Import-Module StarWindX
 $imagename = "imageh"
 $targetname = "starwind"
 $devicesize = "1024"
-try
-{
+
     $server = New-SWServer -host 10.0.1.5 -port 3261 -user root -password starwind
 
     $server.Connect()
@@ -73,15 +78,11 @@ try
         
     $device = Add-HADevice -server $server -firstNode $firstNode -secondNode $secondNode -initMethod "NotSynchronize"
     
-}
-catch
-{
-    Write-Host "Exception $($_.Exception.Message)" -foreground red 
-}
+
 
 $server.Disconnect()
 
-
+Stop-Transcript
 
 
 
