@@ -13,6 +13,17 @@ Start-Service -Name msiscsi
 Set-NetAdapterAdvancedProperty -Name * -RegistryKeyword “*JumboPacket” -Registryvalue 9014
 
 #Get IP Addresses
+ $nicip = ( Get-NetIPAddress | Where-Object { $_.InterfaceAlias -eq 'ethernet' }).ipaddress[1]
+
+If ($nicip -eq "10.0.1.4"){
+write-host "0:First Node"
+exit 0}
+Elseif ($nicip -eq "10.0.1.5"){
+write-host "1:Second Node"
+exit 1}
+Else {exit 1}
+
+
 ###   Prepare Data Disk
 Get-Disk |
 Where partitionstyle -eq 'raw' |
@@ -36,13 +47,13 @@ try
 
     $firstNode = new-Object Node
 
-    $firstNode.ImagePath = "My computer\C"
+    $firstNode.ImagePath = "S"
     $firstNode.ImageName = $imagename
     $firstNode.Size = $devicesize
     $firstNode.CreateImage = $true
     $firstNode.TargetAlias = $targetname
     $firstNode.AutoSynch = $true
-    $firstNode.SyncInterface = "#p2=10.0.2.5:3260"
+    $firstNode.SyncInterface = "#p2=10.0.2.4:3260"
     $firstNode.HBInterface = "#p2=10.0.1.4:3260"
     $firstNode.CacheSize = 64
     $firstNode.CacheMode = "wb"
@@ -62,13 +73,13 @@ try
     $secondNode.HostPort = "3261"
     $secondNode.Login = "root"
     $secondNode.Password = "starwind"
-    $secondNode.ImagePath = "My computer\C"
+    $secondNode.ImagePath = "S"
     $secondNode.ImageName = $imagename
     $secondNode.Size = $devicesize
     $secondNode.CreateImage = $true
     $secondNode.TargetAlias = $targetname
     $secondNode.AutoSynch = $true
-    $secondNode.SyncInterface = "#p1=10.0.2.4:3260"
+    $secondNode.SyncInterface = "#p1=10.0.2.5:3260"
     $secondNode.HBInterface = "#p1=10.0.1.5:3260"
     $secondNode.ALUAOptimized = $true
         
