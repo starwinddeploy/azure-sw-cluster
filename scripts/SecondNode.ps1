@@ -32,7 +32,7 @@ Import-Module StarWindX
 
 $imagename = "imageh"
 $targetname = "starwind"
-$devicesize = "1024"
+$devicesize = "2024"
 
     $server = New-SWServer -host 10.0.1.5 -port 3261 -user root -password starwind
 
@@ -48,7 +48,7 @@ $devicesize = "1024"
     $firstNode.AutoSynch = $true
     $firstNode.SyncInterface = "#p2=10.0.2.4:3260"
     $firstNode.HBInterface = "#p2=10.0.1.4:3260"
-    $firstNode.CacheSize = 64
+    $firstNode.CacheSize = 1024
     $firstNode.CacheMode = "wb"
     $firstNode.PoolName = "pool1"
     $firstNode.SyncSessionCount = 1
