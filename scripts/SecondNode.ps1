@@ -24,15 +24,27 @@ Where partitionstyle -eq 'raw' |
 Initialize-Disk -PartitionStyle GPT -PassThru |
 New-Partition -DriveLetter S -UseMaximumSize |
 Format-Volume -FileSystem NTFS -NewFileSystemLabel "Starwind" -Confirm:$false 
+
+get-disk -Number 2 | Format-List -Property *
+
+write-host "Removing attribute Read-Only"
+Get-Disk -Number 2 | Set-Disk -IsReadonly $False
+
+get-disk -Number 2 |Format-List -Property *
+Get-Volume
+
  
 
 ####   Create Starwind HA Device
 
 Import-Module StarWindX
 
-$imagename = "imageh"
-$targetname = "starwind"
+$imagename = "imageh2"
+$targetname = "starwind2"
 $devicesize = "2024"
+
+    $starwindx = new-object -ComObject StarWindX.StarWindX
+    $starwindx.LogEnableEx( "trace.log", "C:\", $false, 3)
 
     $server = New-SWServer -host 10.0.1.5 -port 3261 -user root -password starwind
 
