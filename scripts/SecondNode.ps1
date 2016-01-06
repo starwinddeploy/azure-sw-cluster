@@ -1,3 +1,9 @@
+### Parametr
+Param(
+  [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)] 
+  $devicesize = 1024
+  )
+
 ### log
 $ErrorActionPreference="SilentlyContinue"
 Stop-Transcript | out-null
@@ -25,13 +31,9 @@ Initialize-Disk -PartitionStyle GPT -PassThru |
 New-Partition -DriveLetter S -UseMaximumSize |
 Format-Volume -FileSystem NTFS -NewFileSystemLabel "Starwind" -Confirm:$false 
 
-get-disk -Number 2 | Format-List -Property *
-
 write-host "Removing attribute Read-Only"
 Get-Disk -Number 2 | Set-Disk -IsReadonly $False
 
-get-disk -Number 2 |Format-List -Property *
-Get-Volume
 
  
 
@@ -39,9 +41,9 @@ Get-Volume
 
 Import-Module StarWindX
 
-$imagename = "imageh2"
-$targetname = "starwind2"
-$devicesize = "2024"
+$imagename = "imageh"
+$targetname = "starwind"
+
 
     $starwindx = new-object -ComObject StarWindX.StarWindX
     $starwindx.LogEnableEx( "trace.log", "C:\", $false, 3)

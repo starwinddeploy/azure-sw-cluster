@@ -105,6 +105,13 @@
       "metadata": {
         "description": "Subnet 2 address prefix in CIDR format"
       }
+    },
+    "sizeOfDiskInGB": {
+      "type": "string",
+      "defaultValue": "1023",
+      "metadata": {
+        "description": "Size of Starwind HA Device"
+      }
     }
 
   },
@@ -113,7 +120,6 @@
     "imageOffer": "starwindvirtualsan",
     "vmName": "vm",
     "vmCount": 2,
-    "sizeOfDiskInGB": "1023",
     "subnet1Name": "subnet1",
     "subnet2Name": "subnet2",
     "virtualNetworkName": "virtualNetwork",
@@ -367,7 +373,7 @@
           "fileUris": [
             "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/SecondNode.ps1"
           ],
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1')]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1 -devicesize ','variables('imagePublisher')')]"
         }
       }
     }
