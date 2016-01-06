@@ -106,11 +106,11 @@
         "description": "Subnet 2 address prefix in CIDR format"
       }
     },
-    "sizeOfDiskInGB": {
+    "DeviceSize": {
       "type": "string",
       "defaultValue": "1023",
       "metadata": {
-        "description": "Size of Starwind HA Device"
+        "description": "Size in GB of Starwind HA Device"
       }
     }
 
