@@ -39,7 +39,7 @@
     },
     "imageSKU": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "starwindperhour",
       "allowedValues": [
         "starwindbyol",
         "starwindperhour"
@@ -120,6 +120,7 @@
     "imageOffer": "starwindvirtualsan",
     "vmName": "vm",
     "vmCount": 2,
+    "sizeOfDiskInGB": "1023",
     "subnet1Name": "subnet1",
     "subnet2Name": "subnet2",
     "virtualNetworkName": "virtualNetwork",
