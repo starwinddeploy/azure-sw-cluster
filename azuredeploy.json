@@ -75,42 +75,11 @@
         "description": "Admin Password"
       }
     },
-    "publicIPAddressType": {
+    "DeviceSizeInMB": {
       "type": "string",
-      "defaultValue": "dynamic",
-      "allowedValues": [
-        "dynamic"
-      ],
+      "defaultValue": "1024",
       "metadata": {
-        "description": "Type of Public IP"
-      }
-    },
-    "addressPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.0.0/16",
-      "metadata": {
-        "description": "VNET address prefix in CIDR format"
-      }
-    },
-    "subnet1Prefix": {
-      "type": "string",
-      "defaultValue": "10.0.1.0/24",
-      "metadata": {
-        "description": "Subnet 1 address prefix in CIDR format"
-      }
-    },
-    "subnet2Prefix": {
-      "type": "string",
-      "defaultValue": "10.0.2.0/24",
-      "metadata": {
-        "description": "Subnet 2 address prefix in CIDR format"
-      }
-    },
-    "DeviceSize": {
-      "type": "string",
-      "defaultValue": "1023",
-      "metadata": {
-        "description": "Size in GB of Starwind HA Device"
+        "description": "Size in MB of Starwind HA Device"
       }
     }
 
@@ -121,8 +90,12 @@
     "vmName": "vm",
     "vmCount": 2,
     "sizeOfDiskInGB": "1023",
-    "subnet1Name": "subnet1",
-    "subnet2Name": "subnet2",
+    "publicIPAddressType": "dynamic",
+    "addressPrefix": "10.0.0.0/16",
+    "subnet1Prefix": "10.0.1.0/24",
+    "subnet2Prefix": "10.0.2.0/24",
+    "subnet1Name": "public",
+    "subnet2Name": "sync",
     "virtualNetworkName": "virtualNetwork",
     "publicIPName": "publicIP",
     "nic1Name": "node",
@@ -374,7 +347,7 @@
           "fileUris": [
             "https://raw.githubusercontent.com/starwinddeploy/azure-sw-cluster/master/scripts/SecondNode.ps1"
           ],
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1 -devicesize ',parameters('DeviceSize'))]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File SecondNode.ps1 -devicesize ',parameters('DeviceSizeInMB'))]"
         }
       }
     }
