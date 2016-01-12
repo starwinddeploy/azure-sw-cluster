@@ -31,7 +31,8 @@
         "Standard_LRS",
         "Standard_ZRS",
         "Standard_GRS",
-        "Standard_RAGRS"
+        "Standard_RAGRS",
+        "Premium_LRS"
       ],
       "metadata": {
         "description": "Type of the storage account"
