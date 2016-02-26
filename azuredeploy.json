@@ -186,7 +186,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAllocationMethod": "Static",
               "privateIPAddress":"[concat('10.0.1.', copyIndex(4))]",
               "publicIPAddress": {
                 "id": "[concat(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPName')), copyindex(1))]"
